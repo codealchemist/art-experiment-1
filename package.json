@@ -1,0 +1,21 @@
+{
+  "name": "art-test-1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "clear; webpack-cli serve",
+    "build": "clear; webpack-cli"
+  },
+  "author": "Alberto Miranda",
+  "license": "ISC",
+  "dependencies": {
+    "createjs": "^1.0.1",
+    "query-string": "^6.13.8",
+    "webpack-cli": "^4.3.1"
+  },
+  "devDependencies": {
+    "webpack": "^5.11.1",
+    "webpack-dev-server": "^3.11.1"
+  }
+}
