@@ -1,8 +1,9 @@
-import { colors, width, height } from 'config'
+import { colors, getWidth, getHeight } from 'config'
 import { getRandomColor, getCirclePosition } from 'util'
 
-function incrementalLines1(total=15) {
-  const stage = new createjs.Stage('canvas')
+function incrementalLines1(stage, total=15) {
+  const width = getWidth()
+  const height = getHeight()
   const coordinates = []
 
   function getNext(index) {

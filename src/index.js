@@ -1,5 +1,6 @@
 import queryString from 'query-string'
-import { onKey } from 'util'
+import Hammer from 'hammerjs'
+import { onKey, onResize, setCanvasSize, fullscreen } from 'util'
 import randomCircles from 'experiments/random-circles'
 import incrementalCircles1 from 'experiments/incremental-circles-1'
 import incrementalCircles2 from 'experiments/incremental-circles-2'
@@ -18,13 +19,13 @@ import incrementalRect4 from 'experiments/incremental-rect-4'
 import incrementalRect5 from 'experiments/incremental-rect-5'
 import incrementalRect6 from 'experiments/incremental-rect-6'
 import incrementalRect7 from 'experiments/incremental-rect-7'
+import incrementalRect8 from 'experiments/incremental-rect-8'
 
 const $canvas = document.getElementById('canvas')
-$canvas.width = window.innerWidth
-$canvas.height = window.innerHeight
-
-const queryParams = queryString.parse(window.location.search)
-console.log('PARAMS', queryParams)
+setCanvasSize($canvas)
+let stage = new createjs.Stage('canvas')
+const params = queryString.parse(window.location.search)
+const hammer = new Hammer($canvas)
 
 const experimentsMap = [
   randomCircles,
@@ -44,36 +45,37 @@ const experimentsMap = [
   incrementalRect4,
   incrementalRect5,
   incrementalRect6,
-  incrementalRect7
+  incrementalRect7,
+  incrementalRect8
 ]
 
 let current = 0
 const total = experimentsMap.length
 let timeoutRef
 let playing = false
+let autoRefreshing = false
 function loop() {
+  clearTimeout(timeoutRef)
   playing = true
   if (current > total - 1) current = 0
-  const experiment = experimentsMap[current]
-  experiment()
+  render(current)
   current++
-
   timeoutRef = setTimeout(loop, 1000 * 5)
 }
 
-onKey('ArrowLeft', () => {
-  if (timeoutRef) {
-    clearTimeout(timeoutRef)
-    playing = false
-  }
-  let prev = current - 1
-  if (prev < 0) prev = total - 1
-  console.log('PREV', prev)
-  current = prev
-  const experiment = experimentsMap[prev]
-  experiment()
-})
-onKey('ArrowRight', () => {
+function render(index) {
+  const experiment = experimentsMap[index]
+  stage.removeAllChildren()
+  experiment(stage)
+}
+
+function autoRefresh() {
+  autoRefreshing = true
+  render(current)
+  timeoutRef = setTimeout(autoRefresh, 1000)
+}
+
+function next() {
   if (timeoutRef) {
     clearTimeout(timeoutRef)
     playing = false
@@ -82,14 +84,77 @@ onKey('ArrowRight', () => {
   if (next === total) next = 0
   console.log('NEXT', next)
   current = next
-  const experiment = experimentsMap[next]
-  experiment()
+  render(next)
+}
+
+function prev() {
+  if (timeoutRef) {
+    clearTimeout(timeoutRef)
+    playing = false
+  }
+  let prev = current - 1
+  if (prev < 0) prev = total - 1
+  console.log('PREV', prev)
+  current = prev
+  render(prev)
+}
+
+onKey('ArrowLeft', () => {
+  prev()
+})
+onKey('ArrowRight', () => {
+  next()
 })
 onKey('Space', () => {
   if (playing) return
   console.log('Slideshow')
   loop()
 })
+onKey('Enter', () => {
+  // Refresh.
+  let index = current
+  if (index > 0 && playing) index = current - 1
+  render(index)
+})
+onKey('p', () => {
+  // Stop.
+  if (autoRefreshing) {
+    autoRefreshing = false
+    clearTimeout(timeoutRef)
+    console.log('Auto refresh stopped.')
+    return
+  }
 
-loop()
-// incrementalCircles7()
+  // Constantly refresh current experiment.
+  console.log('Auto refresh current experiment.')
+  if (playing) {
+    clearTimeout(timeoutRef)
+    playing = false
+    current = current - 1
+  }
+  autoRefresh()
+})
+onResize(() => {
+  setCanvasSize($canvas)
+  stage = new createjs.Stage('canvas')
+  let index = current
+  if (index > 0 && playing) index = current - 1
+  render(index)
+}, 100)
+hammer.on('swipeleft', (event) => {
+  prev()
+})
+hammer.on('swiperight', (event) => {
+  next()
+})
+hammer.on('doubletap', () => {
+  fullscreen.toggle()
+})
+
+if (params.experiment) {
+  const index = parseInt(params.experiment, 10)
+  render(index)
+  current = index
+} else {
+  loop()
+}

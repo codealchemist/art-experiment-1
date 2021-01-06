@@ -1,8 +1,9 @@
-import { colors, width, height } from 'config'
+import { colors, getWidth, getHeight } from 'config'
 import { getRandomInt, getRandomColor } from 'util'
 
-function randomCircles () {
-  const stage = new createjs.Stage('canvas');
+function randomCircles (stage) {
+  const width = getWidth()
+  const height = getHeight()
   const minCircleDiameter = 5
   const maxCircleDiameter = 50
 

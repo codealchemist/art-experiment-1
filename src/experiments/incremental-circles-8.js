@@ -1,8 +1,9 @@
-import { colors, width, height } from 'config'
+import { colors, getWidth, getHeight } from 'config'
 import { getRandomColor, getRandomInt } from 'util'
 
-function incrementalCircles2 () {
-  const stage = new createjs.Stage('canvas');
+function incrementalCircles2 (stage) {
+  const width = getWidth()
+  const height = getHeight()
 
   function getNextCircle(index) {
     const diameter = 200 - 2 * index
