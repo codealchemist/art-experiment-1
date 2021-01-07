@@ -72,13 +72,14 @@ function render(index) {
 function autoRefresh() {
   autoRefreshing = true
   render(current)
-  timeoutRef = setTimeout(autoRefresh, 1000)
+  timeoutRef = setTimeout(autoRefresh, 360)
 }
 
 function next() {
   if (timeoutRef) {
     clearTimeout(timeoutRef)
     playing = false
+    autoRefreshing = false
   }
   let next = current + 1
   if (next === total) next = 0
@@ -91,6 +92,7 @@ function prev() {
   if (timeoutRef) {
     clearTimeout(timeoutRef)
     playing = false
+    autoRefreshing = false
   }
   let prev = current - 1
   if (prev < 0) prev = total - 1
@@ -108,12 +110,15 @@ onKey('ArrowRight', () => {
 onKey('Space', () => {
   if (playing) return
   console.log('Slideshow')
+  autoRefreshing = false
   loop()
 })
 onKey('Enter', () => {
   // Refresh.
   let index = current
   if (index > 0 && playing) index = current - 1
+  autoRefreshing = false
+  clearTimeout(timeoutRef)
   render(index)
 })
 onKey('p', () => {
