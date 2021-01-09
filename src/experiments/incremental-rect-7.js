@@ -1,7 +1,7 @@
 import { colors, getWidth, getHeight } from 'config'
 import { getRandomColor } from 'util'
 
-function incrementalLines1(stage, total=440) {
+function incrementalLines7(stage, total=440) {
   const width = getWidth()
   const height = getHeight()
   const coordinates = []
@@ -50,4 +50,4 @@ function incrementalLines1(stage, total=440) {
   return stage
 }
 
-export default incrementalLines1
+export default incrementalLines7

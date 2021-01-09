@@ -20,6 +20,10 @@ import incrementalRect5 from 'experiments/incremental-rect-5'
 import incrementalRect6 from 'experiments/incremental-rect-6'
 import incrementalRect7 from 'experiments/incremental-rect-7'
 import incrementalRect8 from 'experiments/incremental-rect-8'
+import incrementalRect9 from 'experiments/incremental-rect-9'
+import incrementalRect10 from 'experiments/incremental-rect-10'
+import incrementalLine1 from 'experiments/incremental-line-1'
+import incrementalLine2 from 'experiments/incremental-line-2'
 
 const $canvas = document.getElementById('canvas')
 setCanvasSize($canvas)
@@ -46,7 +50,11 @@ const experimentsMap = [
   incrementalRect5,
   incrementalRect6,
   incrementalRect7,
-  incrementalRect8
+  incrementalRect8,
+  incrementalRect9,
+  incrementalRect10,
+  incrementalLine1,
+  incrementalLine2
 ]
 
 let current = 0
