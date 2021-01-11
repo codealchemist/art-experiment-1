@@ -1,25 +1,32 @@
 import { colors, getWidth, getHeight } from 'config'
 import { getRandomColor, getCirclePosition } from 'util'
 
-function incrementalLines1(stage, total=100) {
+function incrementalLines3 (stage, total = 100) {
   const width = getWidth()
   const height = getHeight()
   const coordinates = []
-  let lineWidth = width/50
+  let lineWidth = width / 50
 
-  function getNext(index) {
+  function getNext (index) {
     const prevCoordinates = coordinates[index - 2] || { x: 0, y: 0 }
     const color = getRandomColor(colors)
     const shape = new createjs.Shape()
 
     // Position.
-    const pos = getCirclePosition(width/2 - lineWidth*3, total, index)
+    const diameter = width > height ? height : width
+    const margin = diameter / 10
+    const pos = getCirclePosition(diameter - margin, total, index)
     console.log('POS', pos)
-    const x = pos.x + width/2
-    const y = pos.y + height/2 - lineWidth/2
-    const x1 = x + lineWidth
-    const y1 = y + lineWidth
-    shape.graphics.setStrokeStyle(3).beginStroke(color).moveTo(x, y).lineTo(x1, y1)
+    const x = pos.x + width / 2
+    const y = pos.y + height / 2
+    const diffX = x > width / 2 ? x : -x
+    const x1 = width / 2 + diffX
+    const y1 = y
+    shape.graphics
+      .setStrokeStyle(3)
+      .beginStroke(color)
+      .moveTo(x, y)
+      .lineTo(x1, y1)
     coordinates.push(pos)
 
     // Effects.
@@ -39,4 +46,4 @@ function incrementalLines1(stage, total=100) {
   return stage
 }
 
-export default incrementalLines1
+export default incrementalLines3

@@ -5,11 +5,13 @@
   "main": "main.js",
   "scripts": {
     "start": "clear; webpack-cli serve",
-    "build": "clear; cp public/* dist; webpack-cli"
+    "build": "clear; cp public/* dist; webpack-cli",
+    "update": "node update.js"
   },
   "author": "Alberto Miranda",
   "license": "ISC",
   "dependencies": {
+    "camelcase": "^6.2.0",
     "createjs": "^1.0.1",
     "hammerjs": "^2.0.8",
     "query-string": "^6.13.8",
