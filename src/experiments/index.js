@@ -1,3 +1,4 @@
+import incrementalArc01 from 'experiments/incremental-arc-01.js'
 import incrementalCircles01 from 'experiments/incremental-circles-01.js'
 import incrementalCircles02 from 'experiments/incremental-circles-02.js'
 import incrementalCircles03 from 'experiments/incremental-circles-03.js'
@@ -18,6 +19,9 @@ import incrementalLine07 from 'experiments/incremental-line-07.js'
 import incrementalLine08 from 'experiments/incremental-line-08.js'
 import incrementalLine09 from 'experiments/incremental-line-09.js'
 import incrementalLine10 from 'experiments/incremental-line-10.js'
+import incrementalLine11 from 'experiments/incremental-line-11.js'
+import incrementalLine12 from 'experiments/incremental-line-12.js'
+import incrementalLine13 from 'experiments/incremental-line-13.js'
 import incrementalRect01 from 'experiments/incremental-rect-01.js'
 import incrementalRect02 from 'experiments/incremental-rect-02.js'
 import incrementalRect03 from 'experiments/incremental-rect-03.js'
@@ -31,6 +35,7 @@ import incrementalRect10 from 'experiments/incremental-rect-10.js'
 import randomCircles from 'experiments/random-circles.js'
 
 export default [
+  incrementalArc01,
   incrementalCircles01,
   incrementalCircles02,
   incrementalCircles03,
@@ -51,6 +56,9 @@ export default [
   incrementalLine08,
   incrementalLine09,
   incrementalLine10,
+  incrementalLine11,
+  incrementalLine12,
+  incrementalLine13,
   incrementalRect01,
   incrementalRect02,
   incrementalRect03,
