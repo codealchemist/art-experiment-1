@@ -1,25 +1,13 @@
 import { colors, getWidth, getHeight } from 'config'
 import { getRandomColor } from 'util'
 
-function incrementalLines10 (stage, total = 240) {
+function incrementalLines10 (stage, total = 200) {
   const width = getWidth()
   const height = getHeight()
   const coordinates = []
   let lineWidth = width / 50
-  const groups = 4
-  const groupSize = total / groups
-  const xMap = {
-    1: 0,
-    2: width,
-    3: width,
-    4: 0
-  }
-  const yMap = {
-    1: 0,
-    2: 0,
-    3: height,
-    4: height
-  }
+  let xDirection = 1
+  let yDirection = 1
 
   let prevRotation = 0
   function getRotation (index) {
@@ -34,20 +22,42 @@ function incrementalLines10 (stage, total = 240) {
     const shape = new createjs.Shape()
 
     // Position.
-    const x = prevCoordinates.x + index
-    const y = prevCoordinates.y + index
-    const x1 = x + width
-    const y1 = y + height
+    const yMulti = 1.15
+    const x = prevCoordinates.x
+    const y = prevCoordinates.y
+    let x1 = x + 50 * xDirection
+    let y1 = y * yMulti + 50 * yDirection
+
+    if (x1 > width) {
+      xDirection = -xDirection
+      x1 = x + 50 * xDirection
+    }
+
+    if (y1 > height) {
+      yDirection = -yDirection
+      y1 = y / yMulti + 50 * yDirection
+    }
+
+    if (x1 < 0) {
+      xDirection = -xDirection
+      x1 = x + 50 * xDirection
+    }
+
+    if (y1 < 0) {
+      yDirection = -yDirection
+      y1 = y * yMulti + 50 * yDirection
+    }
+
     shape.graphics
-      .setStrokeStyle(3)
+      .setStrokeStyle(2)
       .beginStroke(color)
       .moveTo(x, y)
       .lineTo(x1, y1)
-    coordinates.push({ x, y })
+    coordinates.push({ x: x1, y: y1 })
 
     // Effects.
     shape.alpha = 0.5
-    shape.rotation = getRotation(index)
+    // shape.rotation = index
 
     return shape
   }
